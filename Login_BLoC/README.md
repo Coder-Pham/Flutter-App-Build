@@ -118,7 +118,7 @@ Now the main differ is apply *Stream* into *TextField* seamlessly. So we us **St
     - 2 value in *snapshot* are *data* & *error*.
     - And *errorText* is show up - down whenever value changed, so we need *onChanged* paramter. Whenver value changes, it will call API to add value into *Stream*.
     - We can call directly (reference to the function) or call in other function:
-    ```
+    ```dart
     onChange: (newValue) {
         bloc.changeEmail(newValue);
     }
@@ -130,3 +130,47 @@ So that's just how each part of **StreamBuilder** should works, the flow of the 
 - *StreamTransformer* returns value through *Stream.sink*.
 - *stream* parameter - always listen *Stream*. Whenever something happens, it make *StreamBuilder* re-render its children.
 
+## Scoped BLOC Approach
+
+From beginning, we're using **BLOC** as a *Single Global Instance*, but this approach works well with small app. But with large app, **Scoped BLOC** is better.
+
+For example, *TextField* has children widgets so we now more control of **BLOC** for each part of screen, app, code, ...
+
+In this part, we'll about **InheritedWidget** and use it to wrap specific **BLOC** with **Screen**. So there is no other widget which is parent of **Screen** or siblings **Screen** can use this **BLOC**. But still its children can use this **BLOC**.
+
+### Provider Implementation
+
+When we mean to implement **InheritedWidget**, we meant to create custom widget that going to extend from **InheritedWidget**. This calls **Provider** class has its own **BLOC**.
+- Because of that REMIND to create **Provider** constructor:
+```dart
+Provider({Key key, Widget child}) : super(key: key, child: child);
+```
+
+The require method in every **Provider** is *updateShouldNotify()* method. We don't care argument for this particular function and it always return True. 
+
+We also should include a **BLOC** instance in this **Provider**.
+
+Another obscure and **important** function is:
+```dart
+static Bloc of(BuildContext context) {
+    return (context.inheritFromWidgetOfExactType(Provider) as Provider).bloc;
+}
+```
+
+Code explain:
+- From the begining, we example *TextField* has its own children widgets. These new widgets in separate files. So the scope of *LoginScreen* is completely separate scoped of new widget. Then these widgets must somehow reach to **BLOC** in **InheritedWidget** and use it.
+    - So the **of** function is for that reaching. The **of** function allows custom widget, just reach up there and use it.
+
+- *HOW*: base on **BuildContext**. This parameter is handle, identifier that locates specific widget inside **widget hierarchy**.
+    - **context**: extends down widget that beneath them.
+    - So a current widget knows its parent by **context**.
+    - `context.inheritFromWidgetOfExactType(Provider)` is a way to tell its parent where it finds **Provider** class type.
+    - `as Provider`: if found then whatever it gets back, that'll be **Provider**.
+
+### How to use Provider
+
+- First, wrap up **Provider** with a parent custom widget we want, usually is a **Screen** widget.
+- In child widget which needs to use **BLOC** in **Provider**, we initial a **BLOC** with *static* function *of()*.
+- So now, we have **BLOC** to use, but what if its children widgets need to use **BLOC**, we can't initialize every **BLOC** in every widgets.
+    - So we init ONLY ONE **BLOC**.
+    - And when its children need it, we pass **BLOC** as a argument.
