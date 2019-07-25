@@ -116,10 +116,17 @@ Now the main differ is apply *Stream* into *TextField* seamlessly. So we us **St
 - *builder* in method is its child widget, it takes 2 require argument: *context* and *snapshot*
     - The important is *snapshot*, it contains 1 value ONLY whatever just came across our *Stream* (by sink).
     - 2 value in *snapshot* are *data* & *error*.
-    - And *errorText* is show up - down whenever value changed, so we need *onChange* paramter. Whenver value changes, it will call API to add value into *Stream*.
+    - And *errorText* is show up - down whenever value changed, so we need *onChanged* paramter. Whenver value changes, it will call API to add value into *Stream*.
     - We can call directly (reference to the function) or call in other function:
     ```
     onChange: (newValue) {
         bloc.changeEmail(newValue);
     }
     ```
+
+So that's just how each part of **StreamBuilder** should works, the flow of the code may quiet obscure.
+- First, *onChanged* always listen for text changes in Field, when it happened the *sink* get involved.
+- *Sink* takes text into *StreamTransformer* and it is checked here.
+- *StreamTransformer* returns value through *Stream.sink*.
+- *stream* parameter - always listen *Stream*. Whenever something happens, it make *StreamBuilder* re-render its children.
+
