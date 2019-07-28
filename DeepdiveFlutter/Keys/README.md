@@ -87,7 +87,7 @@ Under the cover, for **Widget** Flutter builds a corresponding **Element**. So *
 
 In **Stateless** example, when we swap the order of the Tile widgets in the Row, Flutter walks the **ElementTree** to see if the skeletal structure is the same.
 
-![ElementTree](\img\1.gif)
+![ElementTree](/img/1.gif)
 
 It starts with the **RowElement**, and then moves to its children. The **ElementTree** checks that the new widget is the same type and key as the old one, and if so, it updates its reference to the new widget. In the stateless version, the widgets **don’t have keys**, so Flutter just checks the type.
 
@@ -95,7 +95,7 @@ The **ElementTree** in **Stateful** is quite difference, there are also **State*
 
 In the first **Stateful** example, when we swap the order of the Tile widgets in the Row, Flutter still walks the **ElementTree**, checks and updates the reference of **RowWidget**, the same with its children. Because Flutter uses the **ElementTree** and its corresponding **State** to show what on display. So what we get in first example is buggy.
 
-![ElementTree](\img\2.gif)
+![ElementTree](/img/2.gif)
 
 With **Key** in second example, Flutter still walks the **ElementTree** but **TileElement** and **TileWidget** doesn't match. This causes Flutter to deactivate those elements and remove the references to the Tile Elements in the Element Tree, starting with the first one that doesn’t match.
 
