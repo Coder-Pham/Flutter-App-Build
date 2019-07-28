@@ -38,3 +38,17 @@ Now, we create a GETTER of **Stream** from *combineLatest2* to tied with button.
 - If *sink.addError()* occurs in 1 or 2 input *Stream* then result **Stream** also has that error.
 
 ## Back to StreamBuilder
+
+When we done implementing RxDart for LoginEnable, now we need a way that *Submit Button* takes the new **Stream** and handle behaviour.
+
+Ok then, working with **StreamBuiler** again, this Widget listens to new **Stream** just created. Whenever the new item comes to **Stream**, the button choose to enable/disable login. (Disabled button by set *null* for **onPress**)
+
+Now a new problem, our **Email and Password Stream** are listened twice (once in **StreamBuilder**, second in **combineLatest**), Flutter doesn't allow that happens. The workaround is use **StreamController.broadcast()**, it's just the same like normal but it can be listened more than once.
+
+## Replacing StreamController with Subject (BehaviourSubject)
+
+After validate all *TextField*, we may be need to retrieve data and do something with it like send request, etc,...
+
+But **StreamController** can retrieve data, it only gets 1 data at a time and dump it. So we find solution from RxDart.
+
+Here we use **BehaviourSubject** - A special StreamController that captures the latest item that has been added to the controller, and emits that as the first item to any new listener. And by default, this **Subject** = **StreamController.broadcast()**.
