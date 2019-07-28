@@ -11,6 +11,7 @@ class App extends StatelessWidget {
         home: Scaffold(
           body: LoginScreen(),
         ),
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

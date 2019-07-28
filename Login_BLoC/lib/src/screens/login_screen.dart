@@ -16,7 +16,7 @@ class LoginScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 20.0),
           ),
-          submitButton(),
+          submitButton(bloc),
         ],
       ),
     );
@@ -56,11 +56,20 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget submitButton() {
-    return RaisedButton(
-      child: Text('Login'),
-      color: Colors.cyan[200],
-      onPressed: () {},
+  Widget submitButton(Bloc bloc) {
+    return StreamBuilder(
+      stream: bloc.submitValid,
+      builder: (context, snapshot) {
+        return RaisedButton(
+          child: Text('Login'),
+          color: Colors.cyan[200],
+          onPressed: snapshot.hasData
+              ? () {
+                  print("I'm Here");
+                }
+              : null,
+        );
+      },
     );
   }
 }

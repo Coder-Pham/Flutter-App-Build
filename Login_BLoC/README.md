@@ -164,7 +164,7 @@ Code explain:
 - *HOW*: base on **BuildContext**. This parameter is handle, identifier that locates specific widget inside **widget hierarchy**.
     - **context**: extends down widget that beneath them.
     - So a current widget knows its parent by **context**.
-    - `context.inheritFromWidgetOfExactType(Provider)` is a way to tell its parent where it finds **Provider** class type.
+    - `context.inheritFromWidgetOfExactType(Provider)` is a way to tell find its parent where parent's class is **Provider** type.
     - `as Provider`: if found then whatever it gets back, that'll be **Provider**.
 
 ### How to use Provider
@@ -174,3 +174,12 @@ Code explain:
 - So now, we have **BLOC** to use, but what if its children widgets need to use **BLOC**, we can't initialize every **BLOC** in every widgets.
     - So we init ONLY ONE **BLOC**.
     - And when its children need it, we pass **BLOC** as a argument.
+
+## Submit Button
+
+After validate successful username and password, we should able to submit a form. There are many ways to do it:
+- Use *dart: async*, OK but not fulfill all requirement.
+- *Custom code* it still OK but not use much Stream helpers, then it looks quite goofy.
+- **rxdart** 3rd party package, it's new and **Stream** merging possibilities.
+
+(**NEXT:** RxDart is studied in RxDart.md)
