@@ -50,7 +50,46 @@ Whenever **HomeState** rebuilds, we want a Cat must be at specific location. So 
 
 Ok now, start to combine all characteristic of object with Image by **AnimationBuilder** widget.
 - *animation*: Characteristic of object.
-- *child*: Object itself.
+- *child*: Object itself -> Performance saving
 - *builder*: area being rendered 60 fps.
-    - Why set padding top 100px ? Because the object is set to move upward 100px, so then from initial location to 100px above shouldn't have anything else. 
-    - Only *child* is animated, others can't be moved. So when *child* moves, padding doesn't move.
+    - Why set padding top 100px ? Because the object is set to move back to box 100px, so then *catAnimation.value* changed overtime and cat will be push down overtime.
+
+The *builder* itself re-created 60 fps when being request. Then if we call fetch image 60fps is absolute unable, to overcome that we use *child* - only fetch once and reuse in *builder*.
+
+## Taps with GestureDetector
+
+Now we should do something that to make Cat move only when being tapped. **GestureDetector** comes in for this.
+
+https://api.flutter.dev/flutter/widgets/GestureDetector-class.html
+
+We want 1 tap for rise up and other tap for back down, so we should use **onTap** in this **GestureDetector**.
+
+Ok, when detect a tap on widget then what thing next ? Identify the current status of widget and move correctly direction, inside **CatAnimation** there is a suitable properties for this.
+- **catAnimation.status** will tell us specific current status of widget.
+- Its type is **AnimationStatus**, so we'll use predefined getter to do the work:
+    - **dismissed**: is stop at beginning
+    - **reverse**: is running backward
+    - **forward**: is running forward
+    - **completed**: is stop at the end
+- Compare status and make proper action.
+
+## Box and Positioned
+
+Actually, a box is very straight-forward thing, just declare it as **Container** with color and done.
+
+But the hard things here are how to position 2 things on top each other properly ?
+
+We might wrap up whole **Center(Stack())** inside **GestureDetector**. That basically ok but the box will be left-aligned in the center of screen.
+
+Ok because screen layout, we may wrap a Cat inside **Positioned** (only work in **Stack**) instead of **Container**. Here are 3 problems with this:
+- The Cat never being seen.
+- Wrong aligned of whole Stack
+- Cat image is very big but **Stack** only show what inside its region. Then we may only see its bottom left of image.
+
+Found problems then solve the problems:
+- Shrink down image: The **Positioned** is expand base on image size itself.
+    - Then we set size of image base on **distance left's edge is insect from left of Stack**.
+    - Do the same with right side, now image will always sits inside tightly.
+    - *top*: also helps for push Cat up and down. Because *distance of edge to edge* changed. This is offset so can be negative.
+
+Do some tweak and math for initial & final position of Cat and OK.
