@@ -17,8 +17,11 @@ class Bloc extends Object with Validators {
   Stream<String> get password => _password.stream.transform(passwordValidator);
 
   submit() {
-    final valideEmail = _email.value;
+    final validEmail = _email.value;
     final validPassword = _password.value;
+
+    // Debug
+    print('Email: $validEmail\nPassword: $validPassword');
   }
 
   // Destructor
