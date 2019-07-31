@@ -7,6 +7,12 @@ With some difference:
 - Click first, box stop shaking and cat rise up
 - Click again, cat back to the box and box start shaking again
 
+**NOTE**: 
+
+```
+Sức người có hạn, tài năng không đủ. Nay ta đành lòng chịu thua không thể vẽ được miêu miêu nên đành lấy quỷ thay thế :sob: :sob: :sob:
+```
+
 ## Animation Library Class
 
 Some animation analysis:
@@ -86,6 +92,8 @@ Ok because screen layout, we may wrap a Cat inside **Positioned** (only work in 
 - Wrong aligned of whole Stack
 - Cat image is very big but **Stack** only show what inside its region. Then we may only see its bottom left of image.
 
+**NOTE** for myself: Fully explaination of 3 **PROBLEMS** is in Evernote. If in the future bump to this problem again, read that note. 
+
 Found problems then solve the problems:
 - Shrink down image: The **Positioned** is expand base on image size itself.
     - Then we set size of image base on **distance left's edge is insect from left of Stack**.
@@ -93,3 +101,35 @@ Found problems then solve the problems:
     - *top*: also helps for push Cat up and down. Because *distance of edge to edge* changed. This is offset so can be negative.
 
 Do some tweak and math for initial & final position of Cat and OK.
+
+## Build Flap Animation
+
+I don't like do some generic math here, so I'll build left right **Flap** separately. The easy part, build simple Flap with **Container** with slim long stripe.
+
+Now start with **Rotate Animation**, I found 2 things:
+- **Transform** class:
+    - Transform **after** layout done.
+    - Rotate 90 then *height* can't change and may lead to overlap other widget.
+- **RotatedBox** class:
+    - This object applies its rotation prior to layout
+    - Entire rotated box consumes only as mush space as required. 
+    - Rotate 90 then it requires *height* = *old_width*.
+
+Because there are no other widgets so there will be no difference between 2 methods. Then I use **Transform.rotate()**. This method takes arguments:
+- *child*: Widget will be rotated.
+- *angle*: The angle of rotation, in radian and clockwise.
+- *alignment*: Center of rotation.
+
+Because we need to rotate widgets in 60fps then the **Animation.value** should be applied to *angle*.
+
+Ok, after identify animated object then just wrap up **AnimatedBuilder** with *child* is **FlapContainer** and *builder* is **Transform.rotate()**.
+
+And final job is positioned each flap in **Stack** and **Box**.
+
+## Summary
+
+Animation in Flutter is a **AnimatedBuilder** widget with 2 requirements:
+- **Animation**: value identify objects property, ex: speed, degree, height, etc,...
+- **AnimationController**: controll how **Animation** should change.
+
+And our final job is find the origin of animation, how it changed status.
