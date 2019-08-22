@@ -128,3 +128,5 @@ At this point, we may realize that we are following **Adapter Design Pattern**.
 And as you may guess, we need 2 method:
 - *fetchTopIds()*: only fetch top ids. Implement from *NewsApiProvider.fetchTopIds()*
 - *fetchItem()*: Try to fetch from DB if not exists then fetch from API.
+
+That's a skeleton of the **Repository** class, there are more of modification to make it is true **Design Pattern**. You can check those in *[Refactor] Design pattern* commit.

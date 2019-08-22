@@ -1,14 +1,16 @@
+import 'package:hacker_news/src/resources/repository.dart';
 import 'package:http/http.dart' show Client;
 import 'dart:convert';
 import '../model/item_model.dart';
 import 'dart:async';
+import 'repository.dart;
 
-final String _apiurl = 'https://hacker-news.firebaseio.com/v0';
+final String _apiurl = 'https://hacker-news.firebaseio.com/v0'; 
 
-class NewsApiProvider {
+class NewsApiProvider implements Source{
   Client client = Client();
 
-  Future<List<int>> fetchTopids() async {
+  Future<List<int>> fetchTopIds() async {
     final response =
         await client.get(_apiurl + '/topstories.json?print=pretty');
     final ids = json.decode(response.body).cast<int>();
