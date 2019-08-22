@@ -3,7 +3,7 @@ import 'package:http/http.dart' show Client;
 import 'dart:convert';
 import '../model/item_model.dart';
 import 'dart:async';
-import 'repository.dart;
+import 'repository.dart';
 
 final String _apiurl = 'https://hacker-news.firebaseio.com/v0'; 
 
