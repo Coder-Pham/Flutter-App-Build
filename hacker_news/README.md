@@ -130,3 +130,5 @@ And as you may guess, we need 2 method:
 - *fetchItem()*: Try to fetch from DB if not exists then fetch from API.
 
 That's a skeleton of the **Repository** class, there are more of modification to make it is true **Design Pattern**. You can check those in *[Refactor] Design pattern* commit.
+
+(To be continue on README2).
