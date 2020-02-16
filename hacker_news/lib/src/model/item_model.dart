@@ -34,16 +34,16 @@ class ItemModel {
       : by = parsedJson['by'],
         descendants = parsedJson['descendants'],
         id = parsedJson['id'],
-        kids = parsedJson['kids'],
+        kids = parsedJson['kids'] ?? [],
         score = parsedJson['score'],
         time = parsedJson['time'],
         title = parsedJson['title'],
         type = parsedJson['type'],
         url = parsedJson['url'],
-        deleted = parsedJson['deleted'],
-        dead = parsedJson['dead'],
+        deleted = parsedJson['deleted'] ?? false,
+        dead = parsedJson['dead'] ?? false,
         parent = parsedJson['parent'],
-        text = parsedJson['text'];
+        text = parsedJson['text'] ?? '';
 
     ItemModel.fromDB(Map<String, dynamic> parsedJson) 
       : by = parsedJson['by'],
@@ -60,7 +60,7 @@ class ItemModel {
         parent = parsedJson['parent'],
         text = parsedJson['text'];
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['by'] = this.by;
     data['descendants'] = this.descendants;

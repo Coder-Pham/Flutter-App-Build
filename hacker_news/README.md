@@ -2,6 +2,10 @@
 
 This project is a clone mobile version of Hacker News using API in partnership with Firebase: https://github.com/HackerNews/API
 
+**SHOULD DO:**
+- Use **Provider** dependency instead of custom-Provider. [Provider pub.dev](https://pub.dev/packages/provider)
+- More infomation about how to use Provider widget is on [Flutter Medium](https://medium.com/coding-with-flutter/flutter-global-access-vs-scoped-access-with-provider-8d6b94393bdf)
+
 ## About design
 
 The homepage has the similiar layout like in Hacker News webpage, displays each news. When click-in story will direct to post and comments.
@@ -120,6 +124,7 @@ Add a tuple to SQLite Database is quiet straight-forward, all you need to do is 
 We will work with *insert()* method:
 - *@Required* Table name which you insert a tuple in.
 - *@Required* A tuple is inserted as **Map<String, dynamic>**. So therefore, we should add a method in **ItemModel** for convertion.
+- *@Optional* **conflictAlgorithm**: in case of adding new item to table with duplicate primary key, we can choose which to do with that new item (ignore or update). 
 
 # Repository class
 

@@ -1,4 +1,3 @@
-import 'package:hacker_news/src/resources/repository.dart';
 import 'package:http/http.dart' show Client;
 import 'dart:convert';
 import '../model/item_model.dart';
