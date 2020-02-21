@@ -168,8 +168,8 @@ But in reality, all StreamSubscription pass *event* to **transformer** then this
 ### Solution
 
 We make 2 separate StreamController (**Subject**) to do 2 different works:
-- **itemsFetcher** to do the work with transformer.
-- **itemsOutput** to do the work with every StreamBuilder.
+- **_itemsFetcher** to do the work with transformer.
+- **_itemsOutput** to do the work with every StreamBuilder.
 
 So our flow will be:
 
@@ -179,8 +179,13 @@ StreamController                          StreamController
 ```
 
 Because **_itemsTransformer** previously takes stream of int and output stream of **`Map<int, Future<ItemModel>>`** then:
-- **itemsFetcher**: BehaviorSubject<int>()
-- **itemsOutput**: `BehaviorSubject<Map<int, Future<ItemModel>>>()`
+- **itemsFetcher**: PublishSubject<int>(). **Note**: should change StreamController sink name which handles *fetchItem()*  
+- **itemsOutput**: `BehaviorSubject<Map<int, Future<ItemModel>>>()`. Therefore, we also need getter for this **stream**
 
 <!-- NOTE: When PublishSubject or BehaviorSubject -->
 <!-- What is pipe() function  -->
+**IMPORTANT NOTE** in constructor:
+- From above flow, **_itemsFetcher** stream will run through transformer and return a STREAM.
+- And we need to transfer this STREAM result to our **_itemsOutput**. Therefore, we use **pipe()** to redirect stream.
+
+From here, just need to modify stream getter in StreamBuilder in News tile. And some basic UI design to list each tile with title and points. We can set dividers between news therefore we should group **ListTile** and **Divider** in **Column**.

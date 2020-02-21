@@ -9,6 +9,7 @@ class App extends StatelessWidget {
       child: MaterialApp(
         title: 'Hacker News',
         theme: ThemeData.dark(),
+        debugShowCheckedModeBanner: false,
         home: NewsList(),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../blocs/stories_provider.dart';
 import '../widgets/news_tile.dart';
+import '../widgets/refresh.dart';
 
 class NewsList extends StatelessWidget {
   @override
@@ -9,7 +10,7 @@ class NewsList extends StatelessWidget {
 
     // This is a bad example, shouldnt try this
     bloc.fetchTopIds();
-    //
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -32,15 +33,17 @@ class NewsList extends StatelessWidget {
             ),
           );
         else
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (context, int index) {
-              bloc.fetchItem(snapshot.data[index]);
+          return Refresh(
+            child: ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, int index) {
+                bloc.fetchItem(snapshot.data[index]);
 
-              return NewsTile(
-                itemId: snapshot.data[index],
-              );
-            },
+                return NewsTile(
+                  itemId: snapshot.data[index],
+                );
+              },
+            ),
           );
       },
     );
