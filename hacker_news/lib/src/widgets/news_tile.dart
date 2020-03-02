@@ -28,26 +28,36 @@ class NewsTile extends StatelessWidget {
                 if (!itemSnapshot.hasData)
                   return LoadingContainer();
                 else
-                  return buildTile(itemSnapshot.data);
+                  return buildTile(context, itemSnapshot.data);
               });
       },
     );
   }
 
-  Widget buildTile(ItemModel item) {
+  Widget buildTile(BuildContext context, ItemModel item) {
     return Column(
       children: [
         ListTile(
-          title: Text(item.title),
+          title: Text(
+            item.title,
+            style: TextStyle(
+              color: Colors.purpleAccent[400],
+              fontSize: 18.0,
+            ),
+          ),
           subtitle: item.score > 1
               ? Text("${item.score} points by ${item.by}")
               : Text("${item.score} point by ${item.by}"),
           trailing: Column(
             children: [
-              Icon(Icons.comment),
+              Icon(Icons.comment, color: Colors.purpleAccent[400],),
               Text("${item.descendants}"),
             ],
           ),
+          onTap: () {
+            // ! Navigate to Detail screen here
+            Navigator.pushNamed(context, '/${item.id}');
+          },
         ),
         Divider(
           thickness: 3.0,

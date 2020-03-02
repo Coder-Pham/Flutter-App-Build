@@ -31,7 +31,7 @@ class ItemModel {
       this.text});
 
   ItemModel.fromJson(Map<String, dynamic> parsedJson) 
-      : by = parsedJson['by'],
+      : by = parsedJson['by'] ?? '',
         descendants = parsedJson['descendants'] ?? 0,
         id = parsedJson['id'],
         kids = parsedJson['kids'] ?? [],
