@@ -13,13 +13,7 @@ class Repository {
   ];
 
   Future<List<int>> fetchTopIds() async { 
-    List<int> topIds = [];
-    for (var source in sources)
-    {
-      var ids = await source.fetchTopIds();
-      topIds.addAll(ids);
-    }
-    return topIds;
+    return sources[1].fetchTopIds();
   }
 
   Future<ItemModel> fetchItem(int id) async {
@@ -28,12 +22,20 @@ class Repository {
 
     for (source in sources) {
       item = await source.fetchItem(id);
-      if (item != null) break;
+      if (item != null) 
+        break;
     }
 
-    for (var cache in caches) cache.addItem(item);
+    for (var cache in caches) 
+      cache.addItem(item);
 
     return item;
+  }
+
+  clearCache() async {
+    // Clear cache
+    for (var cache in caches)
+      await cache.clear();
   }
 }
 
@@ -45,4 +47,6 @@ abstract class Source {
 
 abstract class Cache {
   Future<int> addItem(ItemModel item);
+
+  Future<int> clear();
 }

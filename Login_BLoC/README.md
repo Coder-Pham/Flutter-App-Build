@@ -153,7 +153,7 @@ We also should include a **BLOC** instance in this **Provider**.
 Another obscure and **important** function is:
 ```dart
 static Bloc of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(Provider) as Provider).bloc;
+    return (context.dependOnInheritedWidgetOfExactType<Provider>()).bloc;
 }
 ```
 
@@ -164,7 +164,7 @@ Code explain:
 - *HOW*: base on **BuildContext**. This parameter is handle, identifier that locates specific widget inside **widget hierarchy**.
     - **context**: extends down widget that beneath them.
     - So a current widget knows its parent by **context**.
-    - `context.inheritFromWidgetOfExactType(Provider)` is a way to tell find its parent where parent's class is **Provider** type.
+    - `(context.dependOnInheritedWidgetOfExactType<Provider>())` is a way to tell find its parent where parent's class is **Provider** type.
     - `as Provider`: if found then whatever it gets back, that'll be **Provider**.
 
 ### How to use Provider

@@ -19,7 +19,7 @@ class NewsDbProvider implements Source, Cache {
     db = await openDatabase(
       path,
       version: 1,
-      onCreate: (Database newDb, int version) {
+      onCreate: (Database newDb, int version) async {
         newDb.execute("""
           CREATE TABLE Items
             (
@@ -29,9 +29,9 @@ class NewsDbProvider implements Source, Cache {
               time INTEGER,
               text TEXT,
               parent INTEGER,
-              kids BLOB
+              kids BLOB,
               dead INTEGER,
-              delete INTEGER,
+              deleted INTEGER,
               url TEXT,
               score INTEGER,
               title TEXT,
@@ -61,7 +61,15 @@ class NewsDbProvider implements Source, Cache {
   }
 
   Future<int> addItem(ItemModel item) {
-    return db.insert("Items", item.toJson());
+    return db.insert(
+      "Items",
+      item.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+  
+  Future<int> clear() {
+    return db.delete("Items");
   }
 }
 

@@ -23,7 +23,7 @@ void main() {
     });
 
     // expect
-    final ids = await newsApi.fetchTopids();
+    final ids = await newsApi.fetchTopIds();
 
     expect(ids, topIds);
   });
